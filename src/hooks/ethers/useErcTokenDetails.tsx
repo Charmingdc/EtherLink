@@ -45,7 +45,7 @@ const useErcTokenDetails = ({ address, tokenAddress, provider }: ErcTokenProps) 
     };
 
     fetchTokenDetails();
-  }, [address, tokenAddress, provider]);
+  }, [address, tokenAddress]);
 
   return { tokenName, tokenSymbol, tokenTotalSupply, tokenBalance };
 };

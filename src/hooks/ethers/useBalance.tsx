@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
 import { ethers } from "ethers";
 
-
 type UseBalanceProps = {
-  provider: ethers.Provider;
+  provider: ethers.providers.Provider;
   address: string;
 };
 
@@ -33,7 +32,7 @@ const useBalance = ({ provider, address }: UseBalanceProps) => {
     };
 
     fetchBalance();
-  }, [provider, address]);
+  }, [address]);
 
   return { loading, error, balance };
 };
