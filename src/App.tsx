@@ -1,29 +1,30 @@
-import useProvider from './hooks/ethers/useProvider';
-import useBalance from './hooks/ethers/useBalance';
-import useErcTokenDetails from './hooks/ethers/useErcTokenDetails';
-import './App.css';
+import useProvider from "./hooks/ethers/useProvider";
+import useBalance from "./hooks/ethers/useBalance";
+import useErcTokenDetails from "./hooks/ethers/useErcTokenDetails";
+import "./App.css";
 
 const App = () => {
-  const address = '0x9aC9Ce4d390bB09E554da0bF5aCDBA6398809fF8';
+  const address = "0x9aC9Ce4d390bB09E554da0bF5aCDBA6398809fF8";
+  const tokenAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+
   const { provider } = useProvider();
-  const { loading, error, balance } = useBalance();
-  const { tokenName, tokenSymbol, tokenBalance, tokenTotalSuply } = useErcTokenDetails(address, tokenAddress, provider);
+  console.log("Provider:", provider);
+
+  const { loading, error, balance } = useBalance({ provider, address });
+  const { tokenName, tokenSymbol, tokenBalance, tokenTotalSupply } = useErcTokenDetails({ address, tokenAddress, provider });
 
   return (
     <div>
-      <h1> Wallet provider Info  </h1>
-      
+      <h1> Wallet Provider Info </h1>
+
+      <p>{error ? error : loading ? "Loading..." : `Wallet main balance: ${balance} ETH (Sepolia)`}</p>
+
       <p>
-       {error ? error : loading ? 'Loading...' : `Wallet main balance: ${balance} Eth sapolia`}
-      </p>
-      
-      
-      <p>
-       {`Wallet Dai stablecoin details: 
-       Symbol: ${tokenSymbol}
-       Name: ${tokenName}
-       Balance: ${tokenBalance}
-       Total Supply: ${tokenTotalSuply}`}
+        {`Wallet DAI Stablecoin Details:
+        Symbol: ${tokenSymbol}
+        Name: ${tokenName}
+        Balance: ${tokenBalance}
+        Total Supply: ${tokenTotalSupply}`}
       </p>
     </div>
   );
