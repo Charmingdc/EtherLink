@@ -20,7 +20,7 @@ const App = () => {
       <p>{error ? error : loading ? "Loading..." : `Wallet main balance: ${balance} ETH (Sepolia)`}</p>
 
       <p>
-        {`Wallet DAI Stablecoin Details:
+        {`ERC-20 token Details:
         Symbol: ${tokenSymbol}
         Name: ${tokenName}
         Balance: ${tokenBalance}

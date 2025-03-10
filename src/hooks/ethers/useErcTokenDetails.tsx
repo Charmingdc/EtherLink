@@ -1,44 +1,46 @@
-import { ethers } from "ethers";
-import { useState, useEffect } from "react";
+import { ethers } from 'ethers';
+import { useState, useEffect } from 'react';
 
 type ErcTokenProps = {
   address: string;
   tokenAddress: string;
-  provider: ethers.Provider;
+  provider: ethers.providers.Provider;
 };
 
 const useErcTokenDetails = ({ address, tokenAddress, provider }: ErcTokenProps) => {
-  const [tokenName, setTokenName] = useState("");
-  const [tokenSymbol, setTokenSymbol] = useState("");
-  const [tokenTotalSupply, setTokenTotalSupply] = useState(0);
-  const [tokenBalance, setTokenBalance] = useState(0);
+  const [tokenName, setTokenName] = useState<string>('');
+  const [tokenSymbol, setTokenSymbol] = useState<string>('');
+  const [tokenTotalSupply, setTokenTotalSupply] = useState<number>(0);
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
 
-  const ERC_20_ABI = [
-    "function name() view returns (string)",
-    "function symbol() view returns (string)",
-    "function totalSupply() view returns (uint256)",
-    "function balanceOf(address) view returns (uint256)",
+  const ERC_20_ABI: string[] = [
+    'function name() view returns (string)',
+    'function symbol() view returns (string)',
+    'function totalSupply() view returns (uint256)',
+    'function balanceOf(address) view returns (uint256)',
   ];
 
   useEffect(() => {
-    if (!address || !tokenAddress || !provider) return;
-
     const fetchTokenDetails = async () => {
+      if (!address || !tokenAddress || !provider) {
+        console.error('Required info not completed');
+        return;
+      }
+
       try {
         const contract = new ethers.Contract(tokenAddress, ERC_20_ABI, provider);
-        const [name, symbol, totalSupply, balance] = await Promise.all([
-          contract.name(),
-          contract.symbol(),
-          contract.totalSupply(),
-          contract.balanceOf(address),
-        ]);
+        
+        const name = await contract.name();
+        const tSymbol = await contract.symbol();
+        const totalSupply = await contract.totalSupply();
+        const balance = await contract.balanceOf(address);
 
         setTokenName(name);
-        setTokenSymbol(symbol);
-        setTokenTotalSupply(Number(ethers.formatUnits(totalSupply, 18)));
-        setTokenBalance(Number(ethers.formatUnits(balance, 18)));
-      } catch (err) {
-        console.error("Error fetching token details:", err);
+        setTokenSymbol(tSymbol);
+        setTokenTotalSupply(totalSupply);
+        setTokenBalance(balance);
+      } catch (error) {
+        console.error('Error fetching token details:', error);
       }
     };
 
