@@ -38,7 +38,7 @@ const useErcTokenDetails = ({ address, tokenAddress, provider }: ErcTokenProps) 
         setTokenName(name);
         setTokenSymbol(tSymbol);
         setTokenTotalSupply(totalSupply);
-        setTokenBalance(balance);
+        setTokenBalance(ethers.formatUnits(balance, 6));
       } catch (error) {
         console.error('Error fetching token details:', error);
       }
